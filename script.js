@@ -55,6 +55,15 @@ function updateUI() {
     document.getElementById("diary").innerText = gameState.diaryText;
 }
 
+//更新数据
+function updateStats() {
+    document.getElementById("energy").innerText = gameState.energy;
+    document.getElementById("mental-load").innerText = gameState.mentalLoad;
+    document.getElementById("mood").innerText = gameState.mood;
+    document.getElementById("status-text").innerText = gameState.statusText;
+    document.getElementById("diary").innerText = gameState.diaryText;
+}
+
 // **例行状态更新**
 function routine() {
     let randomEvent = Math.random();
