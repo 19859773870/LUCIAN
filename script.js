@@ -1,18 +1,4 @@
-// **Firebase 配置**
-const firebaseConfig = {
-    apiKey: "AIzaSyBzDrueOPpj3los3s1sNnL1mM4J_9TU_oA",
-    authDomain: "lucian-2d2e5.firebaseapp.com",
-    databaseURL: "https://lucian-2d2e5-default-rtdb.firebaseio.com",
-    projectId: "lucian-2d2e5",
-    storageBucket: "lucian-2d2e5.firebasestorage.app",
-    messagingSenderId: "636555076011",
-    appId: "1:636555076011:web:8797b9bcb39cccaf4ff2ee",
-    measurementId: "G-3N80YW9XFH"
-};
 
-// **初始化 Firebase**
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
 
 // **默认状态**
 let gameState = {
