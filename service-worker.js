@@ -6,11 +6,28 @@ const urlsToCache = [
 ];
 
 self.addEventListener("install", event => {
+    self.skipWaiting();  // 让新的 Service Worker 立即生效
+});
+
+self.addEventListener("activate", event => {
     event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(cache => cache.addAll(urlsToCache))
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cacheName => {
+                    return caches.delete(cacheName); // 清除旧缓存
+                })
+            );
+        })
+    );
+    self.clients.claim();  // 让新版本立即接管所有页面
+});
+
+self.addEventListener("fetch", event => {
+    event.respondWith(
+        fetch(event.request).catch(() => caches.match(event.request))
     );
 });
+
 
 self.addEventListener("fetch", event => {
     event.respondWith(
