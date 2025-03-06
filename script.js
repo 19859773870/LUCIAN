@@ -12,8 +12,7 @@ let gameState = {
 
 // **获取数据（从 Firebase 读取）**
 function loadGameState() {
-    const gameStateRef = db.ref("gameState");
-    gameStateRef.once("value")
+    return db.ref("gameState").once("value")
         .then(snapshot => {
             if (snapshot.exists()) {
                 gameState = snapshot.val(); // 更新本地游戏状态
@@ -27,6 +26,7 @@ function loadGameState() {
             console.error("❌ 加载游戏数据失败：", error);
         });
 }
+
 
 
 // **保存数据（同步到 Firebase）**
@@ -129,6 +129,9 @@ function boostMood() {
 
 // **初始化**
 window.onload = function() {
-    loadGameState();
-    routine();
+    loadGameState().then(() => {
+        updateStateWithTime(); // 让时间流逝生效
+        routine();
+    });
 };
+
