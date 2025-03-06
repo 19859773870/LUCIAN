@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #eaf6ff;
+}
+.header {
+    background-color: #74b9ff;
+    color: white;
+    padding: 10px;
+}
+.room {
+    margin-top: 20px;
+}
+.character img {
+    width: 150px;
+    height: 150px;
+}
+.controls button {
+    margin: 5px;
+    padding: 10px;
+    background-color: #a29bfe;
+    border: none;
+    cursor: pointer;
+}
+.log {
+    margin-top: 20px;
+    background-color: #dfe6e9;
+    padding: 10px;
+    border-radius: 10px;
+}

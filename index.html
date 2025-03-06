@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>顾昀的赛博日常</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(reg => console.log("Service Worker 注册成功"))
+                .catch(err => console.log("Service Worker 注册失败", err));
+        }
+    </script>
+</head>
+<body>
+    <div id="app">
+        <div class="header">
+            <h1>顾昀的赛博日常</h1>
+        </div>
+        <div class="room">
+            <div class="character">
+                <img id="character-img" src="default.png" alt="顾昀">
+                <p>状态: <span id="status-text">刚醒，思考今天要干什么。</span></p>
+                <p>精力: <span id="energy">100</span></p>
+                <p>思维负荷: <span id="mental-load">20</span></p>
+                <p>心情: <span id="mood">80</span></p>
+            </div>
+        </div>
+        <div class="controls">
+            <button onclick="giveCoffee()">投喂咖啡</button>
+            <button onclick="forceRest()">让顾昀休息</button>
+            <button onclick="chat()">闲聊</button>
+            <button onclick="boostMood()">安慰一下</button>
+        </div>
+        <div class="log">
+            <h3>日记</h3>
+            <p id="diary">今天还没有新的碎碎念...</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
