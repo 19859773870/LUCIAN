@@ -42,17 +42,31 @@ window.saveGameState = function() {
 // **时间系统：计算时间流逝**
 function updateStateWithTime() {
     const now = Date.now();
-    const elapsedMinutes = Math.floor((now - gameState.lastUpdated) / (1000 * 60));
+    const timeElapsed = Math.floor((now - gameState.lastUpdated) / 60000); // 计算过去了多少分钟
 
-    if (elapsedMinutes > 0) {
-        gameState.energy = Math.max(0, gameState.energy - elapsedMinutes * 2);
-        gameState.mentalLoad = Math.min(100, gameState.mentalLoad + elapsedMinutes * 1);
-        gameState.mood = Math.max(0, gameState.mood - elapsedMinutes * 0.5);
+    if (timeElapsed > 0) {
+        console.log(`⏳ 过去了 ${timeElapsed} 分钟，调整状态中...`);
+        gameState.energy = Math.max(0, gameState.energy - timeElapsed * 2); // 每分钟消耗 2 点能量
+        gameState.mood = Math.max(0, gameState.mood - Math.floor(timeElapsed / 5)); // 每 5 分钟掉 1 点心情
     }
 
-    gameState.lastUpdated = now;
-    saveGameState();
+    gameState.lastUpdated = now; // 记录新时间
+    updateStats(); // 更新 UI
+    saveGameState(); // 保存新状态
 }
+
+
+//时钟
+function updateClock() {
+    const now = new Date();
+    const formattedTime = now.toLocaleTimeString("zh-CN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+    });
+    document.getElementById("clock").innerText = formattedTime;
+}
+
 
 // **更新 UI**
 function updateUI() {
@@ -130,8 +144,10 @@ function boostMood() {
 // **初始化**
 window.onload = function() {
     loadGameState().then(() => {
-        updateStateWithTime(); // 让时间流逝生效
-        routine();
+        updateStateWithTime(); // 计算过去时间
+        routine(); // 开始循环状态变化
+        setInterval(updateClock, 1000); // 开始时钟更新
     });
 };
+
 
