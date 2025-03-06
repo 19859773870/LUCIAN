@@ -58,21 +58,10 @@ function updateStateWithTime() {
 
 //时钟
 function updateClock() {
-    const now = new Date();
-    const beijingTime = new Date(now.getTime() + (now.getTimezoneOffset() + 480) * 60000); // 转换为北京时间
-
-    const formattedTime = beijingTime.toLocaleTimeString("zh-CN", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit"
-    });
-
-    document.getElementById("clock").innerText = formattedTime;
-}
-
-function getBeijingTime() {
-    const now = new Date();
-    return new Date(now.getTime() + (now.getTimezoneOffset() + 480) * 60000); // 强制转换为北京时间
+    const now = getBeijingTime();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    document.getElementById("current-time").innerText = `${hours}:${minutes}`;
 }
 
 
@@ -92,6 +81,10 @@ function updateStats() {
     document.getElementById("mood").innerText = gameState.mood;
     document.getElementById("status-text").innerText = gameState.statusText;
     document.getElementById("diary").innerText = gameState.diaryText;
+    gameState.energy = Math.round(gameState.energy);
+    gameState.mentalLoad = Math.round(gameState.mentalLoad);
+    gameState.mood = Math.round(gameState.mood);
+
 }
 
 // **例行状态更新**
