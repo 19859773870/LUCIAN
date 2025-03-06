@@ -1,7 +1,7 @@
 {
     "name": "顾昀的赛博日常",
     "short_name": "顾昀",
-    "start_url": "index.html",
+    "start_url": "/",
     "display": "standalone",
     "background_color": "#eaf6ff",
     "theme_color": "#74b9ff",
