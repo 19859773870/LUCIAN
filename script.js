@@ -59,12 +59,20 @@ function updateStateWithTime() {
 //时钟
 function updateClock() {
     const now = new Date();
-    const formattedTime = now.toLocaleTimeString("zh-CN", {
+    const beijingTime = new Date(now.getTime() + (now.getTimezoneOffset() + 480) * 60000); // 转换为北京时间
+
+    const formattedTime = beijingTime.toLocaleTimeString("zh-CN", {
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit"
     });
+
     document.getElementById("clock").innerText = formattedTime;
+}
+
+function getBeijingTime() {
+    const now = new Date();
+    return new Date(now.getTime() + (now.getTimezoneOffset() + 480) * 60000); // 强制转换为北京时间
 }
 
 
@@ -142,12 +150,42 @@ function boostMood() {
 }
 
 // **初始化**
-window.onload = function() {
-    loadGameState().then(() => {
-        updateStateWithTime(); // 计算过去时间
-        routine(); // 开始循环状态变化
-        setInterval(updateClock, 1000); // 开始时钟更新
-    });
-};
+function routine() {
+    const now = getBeijingTime().getTime(); // ✅ 确保用的是北京时间
+    const timeSinceLastUpdate = Math.floor((now - gameState.lastUpdated) / 60000); // 计算过去了多少分钟
+
+    // **只有时间间隔超过 30 分钟，才更新状态**
+    if (timeSinceLastUpdate >= 30) {
+        // 🔋 **减少精力**
+        gameState.energy = Math.max(0, gameState.energy - 10);
+
+        // 🧠 **增加思维负荷**
+        gameState.mentalLoad = Math.min(100, gameState.mentalLoad + 5);
+
+        // 😌 **心情变化（如果思维负荷太高，心情会下降）**
+        if (gameState.mentalLoad >= 80) {
+            gameState.mood = Math.max(0, gameState.mood - 10);
+        } else {
+            gameState.mood = Math.min(100, gameState.mood + 5);
+        }
+
+        // 📖 **更新日记**
+        const randomEvent = Math.random();
+        if (randomEvent < 0.2) {
+            gameState.diaryText = "今天的实验有点意思，感觉数据稳定了。";
+        } else if (randomEvent < 0.4) {
+            gameState.diaryText = "文献又是 50 页，救命。";
+        } else if (randomEvent < 0.6) {
+            gameState.diaryText = "突然想和你说点什么，但又有点害羞。";
+        } else {
+            gameState.diaryText = "最近感觉还不错，就是有点累。";
+        }
+
+        gameState.lastUpdated = now; // 记录新更新时间
+        saveGameState(); // 保存状态
+    }
+
+    setTimeout(routine, 1800000); // **30 分钟后再次执行**
+}
 
 
