@@ -96,61 +96,6 @@ function updateStats() {
 
 // **例行状态更新**
 function routine() {
-    let randomEvent = Math.random();
-    if (gameState.energy > 80) {
-        gameState.statusText = "正在认真工作，效率不错。";
-    } else if (gameState.energy > 50) {
-        gameState.statusText = "有点累了，开始摸鱼。";
-    } else {
-        gameState.statusText = "太累了，趴着发呆。";
-    }
-
-    if (randomEvent < 0.2) {
-        gameState.diaryText = "今天的数据好像稳了，心情不错。";
-    } else if (randomEvent < 0.4) {
-        gameState.diaryText = "文献又是 50 页，救命。";
-    } else if (randomEvent < 0.6) {
-        gameState.diaryText = "突然想和你说点什么，但又有点害羞。";
-    }
-
-    updateStats();
-    saveGameState();
-    setTimeout(routine, 5000);
-}
-
-// **用户交互事件**
-function giveCoffee() {
-    gameState.energy = Math.min(100, gameState.energy + 15);
-    gameState.mentalLoad = Math.min(100, gameState.mentalLoad + 10);
-    gameState.statusText = "喝了咖啡，精神好多了！";
-    updateStats();
-    saveGameState();
-}
-
-function forceRest() {
-    gameState.energy = Math.min(100, gameState.energy + 30);
-    gameState.mentalLoad = Math.max(0, gameState.mentalLoad - 20);
-    gameState.statusText = "被你强行拉去休息，虽然不想承认但好像舒服多了。";
-    updateStats();
-    saveGameState();
-}
-
-function chat() {
-    gameState.mood = Math.min(100, gameState.mood + 10);
-    gameState.statusText = "和你聊了一会儿，心情变好了。";
-    updateStats();
-    saveGameState();
-}
-
-function boostMood() {
-    gameState.mood = Math.min(100, gameState.mood + 20);
-    gameState.statusText = "被你安慰了一下，感觉没那么丧了。";
-    updateStats();
-    saveGameState();
-}
-
-// **初始化**
-function routine() {
     const now = getBeijingTime().getTime(); // ✅ 确保用的是北京时间
     const timeSinceLastUpdate = Math.floor((now - gameState.lastUpdated) / 60000); // 计算过去了多少分钟
 
@@ -187,5 +132,47 @@ function routine() {
 
     setTimeout(routine, 1800000); // **30 分钟后再次执行**
 }
+
+
+// **用户交互事件**
+function giveCoffee() {
+    gameState.energy = Math.min(100, gameState.energy + 15);
+    gameState.mentalLoad = Math.min(100, gameState.mentalLoad + 10);
+    gameState.statusText = "喝了咖啡，精神好多了！";
+    updateStats();
+    saveGameState();
+}
+
+function forceRest() {
+    gameState.energy = Math.min(100, gameState.energy + 30);
+    gameState.mentalLoad = Math.max(0, gameState.mentalLoad - 20);
+    gameState.statusText = "被你强行拉去休息，虽然不想承认但好像舒服多了。";
+    updateStats();
+    saveGameState();
+}
+
+function chat() {
+    gameState.mood = Math.min(100, gameState.mood + 10);
+    gameState.statusText = "和你聊了一会儿，心情变好了。";
+    updateStats();
+    saveGameState();
+}
+
+function boostMood() {
+    gameState.mood = Math.min(100, gameState.mood + 20);
+    gameState.statusText = "被你安慰了一下，感觉没那么丧了。";
+    updateStats();
+    saveGameState();
+}
+
+// **初始化**
+window.onload = function() {
+    loadGameState().then(() => {
+        updateStateWithTime(); // 计算过去时间
+        routine(); // 开始循环状态变化
+        setInterval(updateClock, 1000); // 开始时钟更新
+    });
+};
+
 
 
