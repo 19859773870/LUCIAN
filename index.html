@@ -8,9 +8,11 @@
     <link rel="manifest" href="manifest.json">
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-                .then(reg => console.log("Service Worker 注册成功"))
-                .catch(err => console.log("Service Worker 注册失败", err));
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(() => console.log("Service Worker 注册成功"))
+                    .catch(err => console.log("Service Worker 注册失败", err));
+            });
         }
     </script>
 </head>
@@ -42,12 +44,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-<script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/service-worker.js')
-                .then(() => console.log("Service Worker 注册成功"))
-                .catch(err => console.log("Service Worker 注册失败", err));
-        });
-    }
-</script>
