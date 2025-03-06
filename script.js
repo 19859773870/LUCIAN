@@ -12,14 +12,22 @@ let gameState = {
 
 // **获取数据（从 Firebase 读取）**
 function loadGameState() {
-    db.ref("gameState").once("value", snapshot => {
-        if (snapshot.exists()) {
-            gameState = snapshot.val();
-            updateStateWithTime();
-        }
-        updateUI();
-    });
+    const gameStateRef = db.ref("gameState");
+    gameStateRef.once("value")
+        .then(snapshot => {
+            if (snapshot.exists()) {
+                gameState = snapshot.val(); // 更新本地游戏状态
+                console.log("🔥 成功加载游戏数据：", gameState);
+                updateStats(); // 更新 UI
+            } else {
+                console.log("⚠️ 没有找到游戏数据，使用默认值。");
+            }
+        })
+        .catch(error => {
+            console.error("❌ 加载游戏数据失败：", error);
+        });
 }
+
 
 // **保存数据（同步到 Firebase）**
 window.saveGameState = function() {
