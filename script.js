@@ -37,8 +37,12 @@ function loadGameState() {
 
 // **保存数据（同步到 Firebase）**
 function saveGameState() {
-    db.ref("gameState").set(gameState);
+    console.log("🔥 正在保存数据到 Firebase...", gameState); // 👉 这里会在 Console 里打印数据
+    db.ref("gameState").set(gameState)
+        .then(() => console.log("✅ 数据保存成功！"))
+        .catch(err => console.error("❌ 数据保存失败：", err));
 }
+
 
 // **时间系统：计算时间流逝**
 function updateStateWithTime() {
